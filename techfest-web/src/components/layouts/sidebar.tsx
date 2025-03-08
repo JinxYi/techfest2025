@@ -9,15 +9,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import HomeIcon from '@mui/icons-material/Home';
-import SearchIcon from '@mui/icons-material/Search';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Button } from "@mui/material";
 import { AppBar } from "@/components/layouts";
 import { Drawer } from "@/components/layouts";
 import reactLogo from "@/assets/react.svg";
 import { Link } from "react-router";
-
+import FactCheckIcon from '@mui/icons-material/FactCheck';
+import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -35,9 +32,8 @@ interface SidebarProps extends React.PropsWithChildren {
 export function Sidebar({ title, children }: SidebarProps) {
   const theme = useTheme();
   const routes = [
-    { path: "/", name: "Home", icon: <HomeIcon /> },
-    { path: "/explore", name: "Explore", icon: <SearchIcon /> },
-    { path: "/notifications", name: "Notifications", icon: <NotificationsIcon /> },
+    { path: "/", name: "Fact Checker", icon: <FactCheckIcon /> },
+    { path: "/deepfake-detection", name: "Deepfake Detector", icon: <ImageSearchIcon /> },
   ];
 
   const [open, setOpen] = React.useState(true);
@@ -136,10 +132,6 @@ export function Sidebar({ title, children }: SidebarProps) {
             </ListItem>
           ))}
         </List>
-        {/* <Divider /> */}
-        <Button variant="contained" sx={{ margin: "0.7rem" }}>
-          Post
-        </Button>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />

@@ -7,7 +7,7 @@ import { Sidebar } from "./sidebar";
 export const Layout = ({ children }: React.PropsWithChildren) => {
   return (
     <DrawerProvider>
-      <Sidebar title="TechFest">{children}</Sidebar>
+      <Sidebar title="SallyRise2.0">{children}</Sidebar>
     </DrawerProvider>
   );
 };
