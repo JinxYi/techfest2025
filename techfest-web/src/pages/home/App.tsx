@@ -9,7 +9,17 @@ function App() {
       <div className="card">
         <div className="background"></div>
         <div className="logo">
-          We are here to help fight misinformation by helping every individual check what they are reading is correct
+          Our project focuses on creating a web application that detects
+          deepfake images and videos, identifies AI-generated content, and
+          fact-checks online information.
+          <br />
+          <br />
+          Users can upload media, which is then analyzed to determine if it has
+          been manipulated. Additionally, the system cross-references content
+          with reliable sources for verification. Our goal is to empower users
+          with knowledge, making deepfake detection and fact-checking more
+          accessible, while combating misinformation and fostering a more
+          informed, responsible digital society.{" "}
         </div>
         <Link to="/deepfake-detection">
           <div className="box box1">
@@ -26,9 +36,8 @@ function App() {
           </div>
         </Link>
       </div>
-      
+
       {/* Social Media Icons */}
-      
     </Layout>
   );
 }

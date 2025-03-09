@@ -3,3 +3,8 @@ export interface ImageReport {
     Deepfake: number;
     Real: number;
 } 
+
+export interface VideoReport {
+    deepfake_probability: number;
+    video_label: string
+}

@@ -7,7 +7,6 @@ import io
 import torch
 app = Flask(__name__)
 CORS(app)
-# cors = CORS(app, resources={r"/": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 def load_model():
