@@ -1,0 +1,4 @@
+Flask==3.0.0
+transformers==4.35.2
+Pillow==10.1.0
+torch==2.5.1
