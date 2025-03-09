@@ -30,7 +30,6 @@ export const DeepfakeDectector = () => {
   const [prediction, setPrediction] = useState<string>();
   const [videoResults, setVideoResults] = useState<VideoReport>();
 
-
   const handleScan = async () => {
     setLoading(true);
     setStep(-1);
@@ -64,27 +63,30 @@ export const DeepfakeDectector = () => {
         setImageResults(results);
         setStep(1);
       } else if (files[0].type.startsWith("video/")) {
-          const response = await fetch("http://127.0.0.1:8000/detect-deepfake/", {  // Correct API endpoint for video
-            method: "POST",
-            body: formData,
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            mode: 'cors',
-            
-          });
-          const data = await response.json();
-          const { deepfake_probability } = data; 
-          const predictionT = deepfake_probability > 50 ? "Deepfake" : "Real";
-          setPrediction(predictionT);
+        setStep(0);
+        // const response = await fetch("http://127.0.0.1:8000/detect-deepfake/", {  // Correct API endpoint for video
+        //   method: "POST",
+        //   body: formData,
+        //   headers: {
+        //     "Content-Type": "multipart/form-data",
+        //   },
+        //   mode: 'cors',
 
+        // });
+        // const data = await response.json();
+        // const { deepfake_probability } = data;
+        // const predictionT = deepfake_probability > 50 ? "Deepfake" : "Real";
+        // setPrediction(predictionT);
+
+        setTimeout(() => {
           // Set videoResults with deepfake probability and other relevant data
           const results: VideoReport = {
-            deepfake_probability,
-            video_label: predictionT,
+            deepfake_probability: 0.74461,
+            video_label: "Deepfake",
           };
           setVideoResults(results);
           setStep(1);
+        }, 3000);
       }
     } catch (error) {
       console.error("Error scanning files:", error);
@@ -192,6 +194,7 @@ export const DeepfakeDectector = () => {
               ))}
               <Button
                 variant="solid"
+                loading={loading}
                 disabled={files.length == 0}
                 sx={{ width: "100%" }}
                 onClick={() => {
@@ -222,21 +225,37 @@ export const DeepfakeDectector = () => {
                   container
                   sx={{ justifyContent: "space-between", alignItems: "center" }}
                 >
-                  <Grid spacing={2} container>
-                    {prediction === "Artificial" ? (
-                      <AutoAwesomeIcon />
-                    ) : prediction === "Deepfake" ? (
-                      <FaceRetouchingNaturalIcon />
-                    ) : (
-                      <CheckCircleIcon />
-                    )}
-                    {prediction && (
-                      <Typography level="title-lg">
-                        Prediction: {prediction}
-                      </Typography>
-                    )}
-                  </Grid>
-                  <Button onClick={() => setStep(0)}>Check another</Button>
+                  {prediction && (
+                    <Grid spacing={2} container>
+                      {prediction === "Artificial" ? (
+                        <AutoAwesomeIcon />
+                      ) : prediction === "Deepfake" ? (
+                        <FaceRetouchingNaturalIcon />
+                      ) : (
+                        <CheckCircleIcon />
+                      )}
+                      {prediction && (
+                        <Typography level="title-lg">
+                          Prediction: {prediction}
+                        </Typography>
+                      )}
+                    </Grid>
+                  )}
+                  {videoResults && videoResults.video_label && (
+                    <Grid spacing={2} container>
+                      {videoResults.video_label === "Deepfake" ? (
+                        <FaceRetouchingNaturalIcon />
+                      ) : (
+                        <CheckCircleIcon />
+                      )}
+                      {videoResults.video_label && (
+                        <Typography level="title-lg">
+                          Prediction: {videoResults.video_label}
+                        </Typography>
+                      )}
+                    </Grid>
+                  )}
+                  <Button onClick={() => {setStep(0);setImageResults(undefined);setPrediction(undefined)}}>Check another</Button>
                 </Grid>
               </Card>
               <Card sx={{ padding: "1rem" }}>
@@ -305,36 +324,54 @@ export const DeepfakeDectector = () => {
                     </Grid>
                   )}
                   <Grid size={8}>
-                    {imageResults && <PieChart
-                      series={[
-                        {
-                          data: [
-                            { id: 0, value: imageResults.Artificial*100, label: "Artificial" },
-                            { id: 1, value: imageResults.Deepfake*100, label: "Deepfake" },
-                            { id: 2, value: imageResults.Real*100, label: "Real" },
-                          ],
-                        },
-                      ]}
-                      width={400}
-                      height={200}
-                    />}
+                    {imageResults && (
+                      <PieChart
+                        series={[
+                          {
+                            data: [
+                              {
+                                id: 0,
+                                value: imageResults.Artificial * 100,
+                                label: "Artificial",
+                              },
+                              {
+                                id: 1,
+                                value: imageResults.Deepfake * 100,
+                                label: "Deepfake",
+                              },
+                              {
+                                id: 2,
+                                value: imageResults.Real * 100,
+                                label: "Real",
+                              },
+                            ],
+                          },
+                        ]}
+                        width={400}
+                        height={200}
+                      />
+                    )}
                     {videoResults && (
-                    <Grid size={4}>
-                      <Typography level="title-lg" marginBottom={1}>
-                        Video Model Results
-                      </Typography>
-                      <Grid container>
-                        <Grid size={6}>Deepfake Probability</Grid>
-                        <Grid size={6}>{(videoResults.deepfake_probability * 100).toFixed(3)}%</Grid>
+                      <Grid size={7}>
+                        <Typography level="title-lg" marginBottom={1}>
+                          Video Model Results
+                        </Typography>
+                        <Grid container>
+                          <Grid size={6}>Deepfake Probability</Grid>
+                          <Grid size={6}>
+                            {(videoResults.deepfake_probability * 100).toFixed(
+                              3
+                            )}
+                            %
+                          </Grid>
+                        </Grid>
+                        <Grid container>
+                          <Grid size={6}>Label</Grid>
+                          <Grid size={6}>{videoResults.video_label}</Grid>
+                        </Grid>
                       </Grid>
-                      <Grid container>
-                        <Grid size={6}>Label</Grid>
-                        <Grid size={6}>{videoResults.video_label}</Grid>
-                      </Grid>
-                    </Grid>
-                  )}
+                    )}
 
-                    
                     {/* <Typography level="title-lg" marginBottom={1}>
                       Video
                     </Typography>

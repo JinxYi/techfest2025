@@ -4,9 +4,12 @@ import requests
 from dotenv import load_dotenv
 import os
 import openai
+from flask_cors import CORS
 
 load_dotenv()
-
+from flask import Flask, request, jsonify
+app = Flask(__name__)
+CORS(app)
 
 def classifyClaims(claims):
     """
@@ -65,13 +68,39 @@ def AIVerification(claim,evidence):
         ],
         stream=False
     )
-    print(response.choices[0].message.content)
+    return response.choices[0].message.content
 
-if __name__=="__main__":
-    claims  ="Vaccine Causes Autism"
-    classified = classifyClaims([claims])
-    if classified["Category"]=="Fact/Objective":
+# if __name__=="__main__":
+#     claims  ="Vaccine Causes Autism"
+#     classified = classifyClaims([claims])
+#     if classified[0]["Category"]=="Fact/Objective":
+#         evidence =(factCheck(classified))
+#         print(AIVerification(claims,evidence))
+#     else:
+#         print("The claim is a subjective statement and not a fact hence not credible")
+
+
+@app.route("/fact-check", methods=["POST"])
+def fact_check_endpoint():
+    """API endpoint to fact-check claims classified as facts"""
+    data = request.json
+    claim = data.get("claim", "")
+
+    if not claim:
+        return jsonify({"error": "No claim provided"}), 400
+    
+    result = "This claim is fake"
+    classified = classifyClaims([claim])
+    if classified[0]["Category"]=="Fact/Objective":
         evidence =(factCheck(classified))
-        AIVerification(claims,evidence)
+        result = AIVerification(claim,evidence)
     else:
         print("The claim is a subjective statement and not a fact hence not credible")
+
+    print(result)
+    # evidence = fact_check(claim)
+    return jsonify({"claim": claim, "result": result})
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8001, debug=True)
