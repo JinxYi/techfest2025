@@ -1,0 +1,130 @@
+.card {
+    position: sticky;
+    margin-top: 3%;
+    margin-left: -10%;
+    width: 90%;
+    height: 400%;
+    background: lightgrey;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    transition: all 1s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.background {
+    position: absolute;
+    inset: 0;
+    /*background: radial-gradient(circle at 100% 107%, #c86ca0 0%, #98b2e2 30%, #3eccc3 60%, #52a2d4 100%);*/
+    background: radial-gradient(circle at 100% 107%, #6fcebb 0%, #9cece3 30%, #00ffee 60%, #0e777a 100%);
+
+}
+
+.logo {
+    color:black;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+    text-align: center;
+    transition: all 0.6s ease-in-out;
+    max-width: 90%;
+    opacity: 1; 
+    visibility: visible; /* Ensure its visible initially */
+}
+
+.icon {
+    display: inline-block;
+    width: 80%;
+    height: 20px;
+    right:20%;
+    position:absolute;
+}
+
+.box {
+    position: absolute;
+    padding: 10px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.389);
+    border-top: 2px solid rgb(255, 255, 255);
+    border-right: 1px solid white;
+    border-radius: 10% 13% 42% 0%/10% 12% 75% 0%;
+    box-shadow: rgba(100, 100, 111, 0.364) -7px 7px 29px 0px;
+    transform-origin: bottom left;
+    transition: all 1s ease-in-out;
+}
+
+.box::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+}
+
+.box1 {
+    width: 70%;
+    height: 70%;
+    bottom: -70%;
+    left: -70%;
+}
+
+.box1::before {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #ff53d4 60%, #62c2fe 90%);
+
+}
+
+.box1:hover::before {
+    opacity: 1;
+}
+
+.box1:hover .icon .svg {
+    filter: drop-shadow(0 0 5px white);
+}
+
+.box2 {
+    width: 50%;
+    height: 50%;
+    bottom: -50%;
+    left: -50%;
+    transition-delay: 0.2s;
+}
+
+.box2::before {
+    background: radial-gradient(circle at 30% 107%, #91e9ff 0%, #00ACEE 90%);
+}
+
+.box2:hover::before {
+    opacity: 1;
+}
+
+.box2:hover .icon .svg {
+    filter: drop-shadow(0 0 5px white);
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card:hover .box {
+    bottom: -1px;
+    left: -1px;
+}
+
+.card:hover .logo {
+    opacity: 0; /* Make the logo text disappear */
+    visibility: hidden; /* Ensure it is hidden */
+}
+
+.card:hover .box1 {
+    bottom: -1%;
+}
+
+.card:hover .box2 {
+    bottom: -1%;
+}

@@ -1,0 +1,43 @@
+/* From Uiverse.io by Madflows */ 
+.button {
+    position: relative;
+    overflow: hidden;
+    height: 4rem;
+    padding: 0 2rem;
+    border-radius: 1.5rem;
+    background: #514968;
+    background-size: 400%;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    width:80%;
+  }
+  
+  .button:hover::before {
+    transform: scaleX(1);
+  }
+  
+  .button-content {
+    position: relative;
+    font-size: large;
+    z-index: 1;
+  }
+  
+  .button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    width: 100%;
+    height: inherit;
+    border-radius: inherit;
+    background: linear-gradient(
+      82.3deg,
+      rgb(86, 53, 134) 10.8%,
+      rgb(47, 43, 113) 94.3%
+    );
+    transition: all 0.4s;
+  }
+  
