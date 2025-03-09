@@ -1,10 +1,14 @@
 from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
+
 from transformers import pipeline
 from PIL import Image
 import io
 import torch
-
 app = Flask(__name__)
+CORS(app)
+# cors = CORS(app, resources={r"/": {"origins": "*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 def load_model():
     # Use a face or deepfake detection model instead of Stable Diffusion
