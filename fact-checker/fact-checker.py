@@ -1,4 +1,4 @@
-from transformers import pipeline,AutoModelForSequenceClassification, AutoTokenizer
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
 import torch
 import requests
 from dotenv import load_dotenv
