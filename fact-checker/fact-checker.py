@@ -70,5 +70,8 @@ def AIVerification(claim,evidence):
 if __name__=="__main__":
     claims  ="Vaccine Causes Autism"
     classified = classifyClaims([claims])
-    evidence =(factCheck(classified))
-    AIVerification(claims,evidence)
+    if classified["Category"]=="Fact/Objective":
+        evidence =(factCheck(classified))
+        AIVerification(claims,evidence)
+    else:
+        print("The claim is a subjective statement and not a fact hence not credible")
