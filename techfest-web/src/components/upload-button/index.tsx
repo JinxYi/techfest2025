@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import "./upload-button.css";
 import { styled } from '@mui/material/styles';
 const VisuallyHiddenInput = styled('input')({
@@ -47,7 +48,7 @@ export const UploadButton: React.FC<UploadButtonProps> = ({ files, setFiles }) =
           </svg>
         </div>
         <div className="text">
-          <span>Click to upload media</span>
+          <Typography>Click to upload media</Typography>
         </div>
         {/* <input type="file" id="file" /> */}
         <VisuallyHiddenInput
