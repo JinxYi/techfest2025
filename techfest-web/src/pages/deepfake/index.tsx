@@ -20,6 +20,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { ImageReport } from "@/interface/Results";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import FaceRetouchingNaturalIcon from "@mui/icons-material/FaceRetouchingNatural";
+import { VideoReport } from "@/interface/Results";
 
 export const DeepfakeDectector = () => {
   const [loading, setLoading] = useState(false);
@@ -27,22 +28,24 @@ export const DeepfakeDectector = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [imageResults, setImageResults] = useState<ImageReport>();
   const [prediction, setPrediction] = useState<string>();
+  const [videoResults, setVideoResults] = useState<VideoReport>();
+
 
   const handleScan = async () => {
     setLoading(true);
     setStep(-1);
     const formData = new FormData();
     files.forEach((file) => {
-      formData.append("image", file);
+      formData.append(file.type.startsWith("image/") ? "image" : "file", file); // based on file type
     });
     try {
-      const response = await fetch("http://127.0.0.1:5000/detect", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
-
       if (files[0].type.startsWith("image/")) {
+        const response = await fetch("http://127.0.0.1:5000/detect", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await response.json();
         let predictionT = "Real";
         let bestScore = 0;
         const results: ImageReport = data.result.reduce(
@@ -61,7 +64,27 @@ export const DeepfakeDectector = () => {
         setImageResults(results);
         setStep(1);
       } else if (files[0].type.startsWith("video/")) {
-        // to be integrated
+          const response = await fetch("http://127.0.0.1:8000/detect-deepfake/", {  // Correct API endpoint for video
+            method: "POST",
+            body: formData,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            mode: 'cors',
+            
+          });
+          const data = await response.json();
+          const { deepfake_probability } = data; 
+          const predictionT = deepfake_probability > 50 ? "Deepfake" : "Real";
+          setPrediction(predictionT);
+
+          // Set videoResults with deepfake probability and other relevant data
+          const results: VideoReport = {
+            deepfake_probability,
+            video_label: predictionT,
+          };
+          setVideoResults(results);
+          setStep(1);
       }
     } catch (error) {
       console.error("Error scanning files:", error);
@@ -295,6 +318,23 @@ export const DeepfakeDectector = () => {
                       width={400}
                       height={200}
                     />}
+                    {videoResults && (
+                    <Grid size={4}>
+                      <Typography level="title-lg" marginBottom={1}>
+                        Video Model Results
+                      </Typography>
+                      <Grid container>
+                        <Grid size={6}>Deepfake Probability</Grid>
+                        <Grid size={6}>{(videoResults.deepfake_probability * 100).toFixed(3)}%</Grid>
+                      </Grid>
+                      <Grid container>
+                        <Grid size={6}>Label</Grid>
+                        <Grid size={6}>{videoResults.video_label}</Grid>
+                      </Grid>
+                    </Grid>
+                  )}
+
+                    
                     {/* <Typography level="title-lg" marginBottom={1}>
                       Video
                     </Typography>
