@@ -55,10 +55,10 @@ def factCheck(classifiedclaims):
 
 
 def AIVerification(claim,evidence):
-    client = openai.OpenAI(base_url = "http://localhost:11434/v1",
-                api_key = "APIKEY")
+    client = openai.OpenAI(base_url = "https://api.deepseek.com",
+                api_key = os.getenv("DEEPSEEK_KEY"))
     response = client.chat.completions.create(
-        model="deepseek-r1:7b",
+        model="deepseek-chat",
         messages=[
             {"role": "system", "content": "You are a fact-checking AI."},
             {"role": "user", "content": f"Compare the claim: '{claim}' with the evidence: '{evidence}'. Is the claim true or false? Justify your answer. If evidence is empty, please reply that there are no existing data in the database for you to fact check"}
