@@ -1,21 +1,12 @@
-import spacy
 from transformers import pipeline,AutoModelForSequenceClassification, AutoTokenizer
 import torch
 import requests
 from dotenv import load_dotenv
 import os
-import jsonify
 import openai
 
 load_dotenv()
 
-def claimExtraction(text:str):
-
-    nlp = spacy.load("en_core_web_sm")
-    docs = nlp(text)
-    claims = [sent.text for sent in docs.sents if len(sent.text.split()) > 3]
-
-    return claims
 
 def classifyClaims(claims):
     """
@@ -70,7 +61,7 @@ def AIVerification(claim,evidence):
         model="deepseek-r1:7b",
         messages=[
             {"role": "system", "content": "You are a fact-checking AI."},
-            {"role": "user", "content": f"Compare the claim: '{claim}' with the evidence: '{evidence}'. Is the claim true or false? Justify your answer. "}
+            {"role": "user", "content": f"Compare the claim: '{claim}' with the evidence: '{evidence}'. Is the claim true or false? Justify your answer. If evidence is empty, please reply that there are no existing data in the database for you to fact check"}
         ],
         stream=False
     )
