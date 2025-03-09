@@ -1,7 +1,8 @@
 import App from '@/pages/home/App';
-import { Explore } from '@/pages/explore';
+import { FactCheck } from './pages/FactCheck';
 import { BrowserRouter, Routes, Route } from "react-router";
 import { DeepfakeDectector } from './pages/deepfake';
+
 
 function AppRoutes() {
 
@@ -10,6 +11,7 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/deepfake-detection" element={<DeepfakeDectector />} />
+        <Route path="/fact-check" element={<FactCheck />} />
       </Routes>
     </BrowserRouter>
   )
